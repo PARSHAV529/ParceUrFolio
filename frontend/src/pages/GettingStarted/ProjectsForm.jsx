@@ -1,65 +1,54 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { setProjects } from "@/Redux/formDataSlice";
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 
-export function ProjectsForm({ formData, setFormData }) {
+export function ProjectsForm() {
+  const dispatch = useDispatch();
+  const projects = useSelector((state) => state.formData.projects || []);
   const [newProject, setNewProject] = useState({
     name: "",
     description: "",
     link: "",
   });
   const [editingIndex, setEditingIndex] = useState(null);
-  const dispatch = useDispatch()
-
-
-  // Effect to reset form when editing a project
-  useEffect(() => {
-    if (editingIndex !== null) {
-      setNewProject(formData.projects[editingIndex]);
-    } else {
-      setNewProject({ name: "", description: "", link: "" });
-    }
-  }, [editingIndex, formData.projects]);
 
   const handleAddOrEditProject = () => {
-    if (editingIndex !== null) {
-      // Edit the existing project
-      setFormData((prev) => {
-        const updatedProjects = [...prev.projects];
-        updatedProjects[editingIndex] = newProject;
-        return { ...prev, projects: updatedProjects };
-      });
-      setEditingIndex(null); // Reset editing state
+    if (newProject.name.trim() && newProject.description.trim()) {
+      const updatedProjects = [...projects];
+
+      if (editingIndex !== null) {
+        updatedProjects[editingIndex] = newProject; // Edit project
+      } else {
+        updatedProjects.push(newProject); // Add new project
+      }
+
+      dispatch(setProjects(updatedProjects));
+      setNewProject({ name: "", description: "", link: "" });
+      setEditingIndex(null);
     } else {
-      // Add a new project
-      setFormData((prev) => ({
-        ...prev,
-        projects: [...prev.projects, newProject],
-      }));
-      const updatedArray = [...formData.projects, newProject];
-      dispatch(setProjects(updatedArray))
+      alert("Please fill out the project name and description.");
     }
-    setNewProject({ name: "", description: "", link: "" }); // Reset form after submission
   };
 
   const handleEdit = (index) => {
-    setEditingIndex(index); // Set the index of the project to edit
+    setNewProject(projects[index]);
+    setEditingIndex(index);
   };
 
   const handleRemove = (index) => {
-    setFormData((prev) => ({
-      ...prev,
-      projects: prev.projects.filter((_, i) => i !== index),
-    }));
+    const updatedProjects = projects.filter((_, i) => i !== index);
+    dispatch(setProjects(updatedProjects));
   };
 
   return (
     <div>
       <h2 className="text-lg font-semibold mb-4">Projects</h2>
+
+      {/* Display list of projects */}
       <div>
-        {(formData.projects || []).map((project, index) => (
+        {projects.map((project, index) => (
           <div key={index} className="mb-4 p-4 border rounded-lg">
             <div className="mb-2">
               <strong>{project.name}</strong>
@@ -88,6 +77,8 @@ export function ProjectsForm({ formData, setFormData }) {
           </div>
         ))}
       </div>
+
+      {/* Form to add or edit a project */}
       <div className="mb-4">
         <Input
           type="text"

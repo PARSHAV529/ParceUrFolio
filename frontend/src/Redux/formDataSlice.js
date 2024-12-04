@@ -1,65 +1,69 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// const initialState = {
-//   basicInfo: {
-//     name: '',
-//     email: '',
-//     phone: '',
-//   },
-//   education: [],
-//   experience: [],
-//   skills: [],
-//   projects: [],
-// };
-
 const initialState = {
   basicInfo: {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    phone: '+1 234 567 890',
+    name: '',
+    email: '',
+    jobTitle: '',
+    city: '',
+    phone: '',
   },
-  education: [
-    {
-      degree: 'Bachelor of Science in Computer Science',
-      institution: 'XYZ University',
-      year: '2024',
-    },
-    {
-      degree: 'High School Diploma',
-      institution: 'ABC High School',
-      year: '2020',
-    },
-  ],
-  experience: [
-    {
-      role: 'Software Developer Intern',
-      company: 'TechCorp',
-      startDate: 'June 2023',
-      endDate: 'August 2023',
-      description: 'Worked on building features for the company’s main web application using React.js and Node.js.',
-    },
-    {
-      role: 'Junior Developer',
-      company: 'Web Solutions',
-      startDate: 'September 2023',
-      endDate: 'Present',
-      description: 'Developing and maintaining web applications, focusing on front-end development using React and backend with Node.js.',
-    },
-  ],
-  skills: ['JavaScript', 'React.js', 'Node.js', 'HTML', 'CSS', 'MongoDB', 'Git'],
-  projects: [
-    {
-      name: 'Portfolio Website',
-      description: 'Built a personal portfolio website to showcase projects and skills.',
-      link: 'https://github.com/johndoe/portfolio',
-    },
-    {
-      name: 'E-commerce App',
-      description: 'Developed an e-commerce application with product browsing, user authentication, and a shopping cart.',
-      link: 'https://github.com/johndoe/e-commerce',
-    },
-  ],
+  education: [],
+  experience: [],
+  skills: [],
+  projects: [],
 };
+
+// const initialState = {
+//   basicInfo: {
+//     name: 'Parshav Andhariya',
+//     email: 'john.doe@example.com',
+//     jobTitle: 'Software Developer',
+//     city:'bhavnagar',
+//     phone: '7383649720',
+//   },
+//   education: [
+//     {
+//       degree: 'Bachelor of Science in Computer Science',
+//       institution: 'XYZ University',
+//       year: '2024',
+//     },
+//     {
+//       degree: 'High School Diploma',
+//       institution: 'ABC High School',
+//       year: '2020',
+//     },
+//   ],
+//   experience: [
+//     {
+//       role: 'Software Developer Intern',
+//       company: 'TechCorp',
+//       startDate: 'June 2023',
+//       endDate: 'August 2023',
+//       description: 'Worked on building features for the company’s main web application using React.js and Node.js.',
+//     },
+//     {
+//       role: 'Junior Developer',
+//       company: 'Web Solutions',
+//       startDate: 'September 2023',
+//       endDate: 'Present',
+//       description: 'Developing and maintaining web applications, focusing on front-end development using React and backend with Node.js.',
+//     },
+//   ],
+//   skills: ['JavaScript', 'React.js', 'Node.js', 'HTML', 'CSS', 'MongoDB', 'Git'],
+//   projects: [
+//     {
+//       name: 'Portfolio Website',
+//       description: 'Built a personal portfolio website to showcase projects and skills.',
+//       link: 'https://github.com/johndoe/portfolio',
+//     },
+//     {
+//       name: 'E-commerce App',
+//       description: 'Developed an e-commerce application with product browsing, user authentication, and a shopping cart.',
+//       link: 'https://github.com/johndoe/e-commerce',
+//     },
+//   ],
+// };
 
 const formDataSlice = createSlice({
   name: 'formData',

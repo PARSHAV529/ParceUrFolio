@@ -1,104 +1,96 @@
-import React, { useState } from "react";
+import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import DatePickerInput from "./DatePickerInput";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setEducation } from "@/Redux/formDataSlice";
 
-export function EducationForm({ formData, handleChange, handleAddOrEdit }) {
-  const [degree, setDegree] = useState("");
-  const [institute, setInstitute] = useState("");
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [marks, setMarks] = useState("");
-  const dispatch = useDispatch()
+export function EducationForm() {
+  const dispatch = useDispatch();
+  const educationData = useSelector((state) => state.formData.education || []);
 
+  const handleAdd = (event) => {
+    event.preventDefault();
 
-  const handleSubmit = () => {
-    if (degree && institute && startDate && marks) {
-      const newEducation = { degree, institute, startDate, endDate, marks };
-      handleAddOrEdit("education",null, newEducation,"add");
-      const updatedArray = [...formData, newEducation];
-      dispatch(setEducation(updatedArray))
-      
+    const formData = new FormData(event.target);
+    const newEducation = {
+      degree: formData.get("degree"),
+      institute: formData.get("institute"),
+      startDate: formData.get("startDate"),
+      endDate: formData.get("endDate"),
+      marks: formData.get("marks"),
+    };
 
-      // Reset the form
-      setDegree("");
-      setInstitute("");
-      setStartDate(null);
-      setEndDate(null);
-      setMarks("");
-    } else {
-      alert("Please fill all fields.");
+    if (!newEducation.degree || !newEducation.institute || !newEducation.startDate || !newEducation.marks) {
+      alert("Please fill all required fields.");
+      return;
     }
+
+    dispatch(setEducation([...educationData, newEducation]));
+    event.target.reset();
+  };
+
+  const handleRemove = (index) => {
+    const updatedEducation = educationData.filter((_, i) => i !== index);
+    dispatch(setEducation(updatedEducation));
   };
 
   return (
-    <div className="space-y-4">
+    <div>
       <h2 className="text-xl font-semibold">Education</h2>
 
-      <div>
-        <Label htmlFor="degree">Degree</Label>
-        <Input
-          id="degree"
-          placeholder="Enter your degree"
-          value={degree}
-          onChange={(e) => setDegree(e.target.value)}
-        />
+      {/* Display the list of education entries */}
+      <div className="space-y-4 mb-6">
+        {educationData.map((edu, index) => (
+          <div key={index} className="p-4 border rounded-lg bg-gray-50">
+            <h3 className="font-bold text-lg">{edu.degree}</h3>
+            <p>{edu.institute}</p>
+            <p>
+              {edu.startDate} - {edu.endDate || "Present"}
+            </p>
+            <p>Marks: {edu.marks}</p>
+            <Button
+              variant="destructive"
+              onClick={() => handleRemove(index)}
+              className="mt-2"
+            >
+              Remove
+            </Button>
+          </div>
+        ))}
       </div>
 
-      <div>
-        <Label htmlFor="institute">Institute</Label>
-        <Input
-          id="institute"
-          placeholder="Enter the name of your institute"
-          value={institute}
-          onChange={(e) => setInstitute(e.target.value)}
-        />
-      </div>
+      {/* Form to add new education */}
+      <form onSubmit={handleAdd} className="space-y-4">
+        <div>
+          <Label htmlFor="degree">Degree</Label>
+          <Input id="degree" name="degree" placeholder="Enter your degree" />
+        </div>
 
-      <div>
-        <Label htmlFor="startDate">Start Date</Label>
-        {/* <DatePickerInput
-          selected={startDate}
-          handleChange={(date) => setStartDate(date)}
-        /> */}
-        <Input
-          type="date"
-          id="startDate"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-      </div>
+        <div>
+          <Label htmlFor="institute">Institute</Label>
+          <Input id="institute" name="institute" placeholder="Enter the name of your institute" />
+        </div>
 
-      <div>
-        <Label htmlFor="endDate">End Date</Label>
-        {/* <DatePickerInput
-          selected={endDate}
-          handleChange={(date) => setEndDate(date)}
-        /> */}
-         <Input
-          type="date"
-          id="endDate"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-      </div>
+        <div>
+          <Label htmlFor="startDate">Start Date</Label>
+          <Input type="date" id="startDate" name="startDate" />
+        </div>
 
-      <div>
-        <Label htmlFor="marks">Marks</Label>
-        <Input
-          id="marks"
-          placeholder="Enter your marks or 'Pursuing'"
-          value={marks}
-          onChange={(e) => setMarks(e.target.value)}
-        />
-      </div>
+        <div>
+          <Label htmlFor="endDate">End Date</Label>
+          <Input type="date" id="endDate" name="endDate" />
+        </div>
 
-      <Button onClick={handleSubmit} variant="primary">
-        Add Education
-      </Button>
+        <div>
+          <Label htmlFor="marks">Marks</Label>
+          <Input id="marks" name="marks" placeholder="Enter your marks or 'Pursuing'" />
+        </div>
+
+        <Button type="submit" variant="primary">
+          Add Education
+        </Button>
+      </form>
     </div>
   );
 }

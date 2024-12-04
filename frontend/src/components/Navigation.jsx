@@ -21,7 +21,7 @@ const items = [
   },
   {
     title: "Select Template",
-    url: "/templates",
+    url: "/select-template",
     icon: Edit,
   },
   {
