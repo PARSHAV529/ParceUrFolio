@@ -3,7 +3,7 @@
 /* variables */
 :root{
     --border: 1px solid black;
-    --primary: white;
+    /* --primary: white; */
     --secondary: black;
     --mid: rgb(240, 240, 240);
 }

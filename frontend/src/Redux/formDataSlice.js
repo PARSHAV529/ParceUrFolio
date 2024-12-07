@@ -1,76 +1,85 @@
-import { createSlice } from '@reduxjs/toolkit';
-
-const initialState = {
-  basicInfo: {
-    name: '',
-    email: '',
-    jobTitle: '',
-    city: '',
-    phone: '',
-  },
-  education: [],
-  experience: [],
-  skills: [],
-  projects: [],
-};
+import { createSlice } from "@reduxjs/toolkit";
 
 // const initialState = {
 //   basicInfo: {
-//     name: 'Parshav Andhariya',
-//     email: 'john.doe@example.com',
-//     jobTitle: 'Software Developer',
-//     city:'bhavnagar',
-//     phone: '7383649720',
+//     name: '',
+//     email: '',
+//     jobTitle: '',
+//     city: '',
+//     phone: '',
+//     aboutMe: '', // Added
+//     profileImage: '', // Added
 //   },
-//   education: [
-//     {
-//       degree: 'Bachelor of Science in Computer Science',
-//       institution: 'XYZ University',
-//       year: '2024',
-//     },
-//     {
-//       degree: 'High School Diploma',
-//       institution: 'ABC High School',
-//       year: '2020',
-//     },
-//   ],
-//   experience: [
-//     {
-//       role: 'Software Developer Intern',
-//       company: 'TechCorp',
-//       startDate: 'June 2023',
-//       endDate: 'August 2023',
-//       description: 'Worked on building features for the company’s main web application using React.js and Node.js.',
-//     },
-//     {
-//       role: 'Junior Developer',
-//       company: 'Web Solutions',
-//       startDate: 'September 2023',
-//       endDate: 'Present',
-//       description: 'Developing and maintaining web applications, focusing on front-end development using React and backend with Node.js.',
-//     },
-//   ],
-//   skills: ['JavaScript', 'React.js', 'Node.js', 'HTML', 'CSS', 'MongoDB', 'Git'],
-//   projects: [
-//     {
-//       name: 'Portfolio Website',
-//       description: 'Built a personal portfolio website to showcase projects and skills.',
-//       link: 'https://github.com/johndoe/portfolio',
-//     },
-//     {
-//       name: 'E-commerce App',
-//       description: 'Developed an e-commerce application with product browsing, user authentication, and a shopping cart.',
-//       link: 'https://github.com/johndoe/e-commerce',
-//     },
-//   ],
+//   education: [],
+//   experience: [],
+//   skills: [],
+//   projects: [],
 // };
+
+const initialState = {
+  basicInfo: {
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    jobTitle: 'Software Engineer',
+    city: 'San Francisco, CA',
+    phone: '+1 123 456 7890',
+    aboutMe: 'Passionate developer with a knack for problem-solving and creating efficient software solutions.',
+    profileImage: 'https://via.placeholder.com/150', // Example placeholder URL
+  },
+  education: [
+    {
+      degree: 'Bachelor of Technology',
+      institute: 'Stanford University',
+      startDate: '2018-08-01',
+      endDate: '2022-05-15',
+      marks: '3.8 GPA',
+    },
+    {
+      degree: 'Master of Science',
+      institute: 'MIT',
+      startDate: '2022-09-01',
+      endDate: '2024-06-15',
+      marks: '4.0 GPA',
+    },
+  ],
+  experience: [
+    {
+      role: 'Software Developer Intern',
+      company: 'Google',
+      startDate: '2023-06-01',
+      endDate: '2023-09-01',
+      description: 'Developed scalable backend services using Node.js and enhanced API performance by 25%.',
+    },
+    {
+      role: 'Junior Software Engineer',
+      company: 'Facebook',
+      startDate: '2024-07-01',
+      endDate: '2024-12-01',
+      description: 'Worked on front-end frameworks to improve user engagement by 30%.',
+    },
+  ],
+  skills: ['JavaScript', 'React', 'Node.js', 'MongoDB', 'CSS', 'HTML'],
+  projects: [
+    {
+      name: 'E-Commerce Platform',
+      description: 'Developed a full-stack e-commerce web application with user authentication and product management.',
+      link: 'https://github.com/johndoe/ecommerce-platform',
+    },
+    {
+      name: 'Portfolio Website',
+      description: 'Designed and implemented a personal portfolio website to showcase projects and skills.',
+      link: 'https://johndoe.dev',
+    },
+  ],
+};
+
 
 const formDataSlice = createSlice({
   name: 'formData',
   initialState,
   reducers: {
     setBasicInfo(state, action) {
-      state.basicInfo = action.payload;
+      state.basicInfo = { ...state.basicInfo, ...action.payload }; // Updated to merge changes
     },
     setEducation(state, action) {
       state.education = action.payload;
@@ -97,16 +106,16 @@ const formDataSlice = createSlice({
       state.projects.push(action.payload);
     },
     removeEducation(state, action) {
-      state.education = state.education.filter((item, index) => index !== action.payload);
+      state.education = state.education.filter((_, index) => index !== action.payload);
     },
     removeExperience(state, action) {
-      state.experience = state.experience.filter((item, index) => index !== action.payload);
+      state.experience = state.experience.filter((_, index) => index !== action.payload);
     },
     removeSkill(state, action) {
-      state.skills = state.skills.filter((item, index) => index !== action.payload);
+      state.skills = state.skills.filter((_, index) => index !== action.payload);
     },
     removeProject(state, action) {
-      state.projects = state.projects.filter((item, index) => index !== action.payload);
+      state.projects = state.projects.filter((_, index) => index !== action.payload);
     },
     updateEducation(state, action) {
       const { index, data } = action.payload;

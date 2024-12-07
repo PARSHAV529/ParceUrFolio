@@ -7,14 +7,15 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SelectTemplate from './pages/SelectTemplate';
 import PortfolioPreview from './pages/PortfolioPreview'; // Import PortfolioPreview page
 import TemplatePage from './pages/TemplatePage';
+import ThemeSelectionPage from './pages/ThemeSelectionPage';
 
 function App() {
   return (
     <>
       <Router>
-        <div className="flex h-screen">
+        <div className="flex  h-screen">
           {/* Sidebar */}
-          <div className="w-64">
+          <div className="">
             <SidebarProvider>
               <AppSidebar />
               <main>
@@ -24,12 +25,13 @@ function App() {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 p-6">
+          <div className="flex-1 p-6 items-center justify-center ">
             <Routes>
               <Route path="/" element={<GettingStarted />} />
               <Route path="/data-preview" element={<DataPreview />} />
               <Route path="/select-template" element={<SelectTemplate />} />
               <Route path="/template/:templateName" element={<TemplatePage />} />
+              <Route path="/themes" element={<ThemeSelectionPage />} />
               {/* <Route path="/preview/:templateName" element={<PortfolioPreview />} /> */}
               {/* Add more routes for themes, download, etc. */}
             </Routes>

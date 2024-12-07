@@ -39,7 +39,7 @@ function Tempalte1(card) {
         <Projects />
         <About />
         {/* <Certifications /> */}
-        <Contact />
+        {/* <Contact /> */}
         <Footer />
       </div>
   );

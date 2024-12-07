@@ -1,40 +1,41 @@
-// src/components/TemplatePage.js
-import React from 'react';
-import { useSelector } from 'react-redux';
-import MinimalistTemplate from '@/Templates/MinimalistTemplate';
-import CreativeTemplate from '@/Templates/CreativeTemplate';
-import ProfessionalTemplate from '@/Templates/ProfessionalTemplate';
-import DarkThemeTemplate from '@/Templates/DarkThemeTemplate';
-import TimelineTemplate from '@/Templates/TimelineTemplate';
-import { useParams } from 'react-router-dom';
+import React from "react";
+import { useSelector } from "react-redux";
+import MinimalistTemplate from "@/Templates/MinimalistTemplate";
+import CreativeTemplate from "@/Templates/CreativeTemplate";
+import ProfessionalTemplate from "@/Templates/ProfessionalTemplate";
+import DarkThemeTemplate from "@/Templates/DarkThemeTemplate";
+import TimelineTemplate from "@/Templates/TimelineTemplate";
+import { useParams } from "react-router-dom";
 
 export default function TemplatePage() {
   const formData = useSelector((state) => state.formData);
-  const templateName = useParams()
-  console.log(templateName.templateName);
-  
+  const { templateName } = useParams();
+  const selectedTheme = useSelector((state) => state.theme.selectedTheme);
 
-  // Choose the template based on the templateName
   let TemplateComponent;
-  switch (templateName.templateName) {
-    case 'minimalist':
+  switch (templateName) {
+    case "minimalist":
       TemplateComponent = MinimalistTemplate;
       break;
-    case 'creative':
+    case "creative":
       TemplateComponent = CreativeTemplate;
       break;
-    case 'professional':
+    case "professional":
       TemplateComponent = ProfessionalTemplate;
       break;
-    case 'dark-theme':
+    case "dark-theme":
       TemplateComponent = DarkThemeTemplate;
       break;
-    case 'timeline':
+    case "timeline":
       TemplateComponent = TimelineTemplate;
       break;
     default:
       TemplateComponent = MinimalistTemplate;
   }
 
-  return <TemplateComponent formData={formData} />;
+  return (
+    <div className={`h-full p-6 ${selectedTheme}-theme`}>
+      <TemplateComponent formData={formData} theme={selectedTheme} />
+    </div>
+  );
 }

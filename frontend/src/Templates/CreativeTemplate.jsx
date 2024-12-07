@@ -8,7 +8,7 @@ export default function CreativeTemplate() {
 
   return (
    <Tempalte1 formData={formData}/>
-  // <div>helo</div>
+  
   );
 }
 

@@ -1,8 +1,9 @@
 .header {
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100dvw;
+    /* left: 0; */
+    /* width: 100dvw; */
+    /* width: 100vh; */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -74,7 +75,7 @@
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 10dvh;
+        /* top: 10dvh; */
         height: 90dvh;
         background-color: var(--primary);
         width: 100dvw;
