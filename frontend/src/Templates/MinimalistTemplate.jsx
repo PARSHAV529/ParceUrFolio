@@ -2,11 +2,14 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Typewriter } from 'react-simple-typewriter';
+import Tempalte1 from './T1/Components/Template1';
 
 export default function MinimalistTemplate() {
   const formData = useSelector((state) => state.formData);
 
   return (
+    // <Tempalte1 formData={formData}/>
+
     <div className=" lg:flex-row bg-gray-100 min-h-screen">
       {/* Navigation */}
       <header className="w-full bg-white shadow-md py-4 sticky top-0 z-10">

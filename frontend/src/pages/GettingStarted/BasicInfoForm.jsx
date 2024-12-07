@@ -1,9 +1,16 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setBasicInfo } from "@/Redux/formDataSlice"; // Adjust the path to your slice
 
-export function BasicInfoForm({ formData, handleChange }) {
-  const reduxData = useSelector(state=>state.formData.basicInfo)
+export function BasicInfoForm() {
+  const dispatch = useDispatch();
+  const basicInfo = useSelector((state) => state.formData.basicInfo);
+
+  const handleChange = (field, value) => {
+    dispatch(setBasicInfo({ ...basicInfo, [field]: value }));
+  };
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Basic Information</h2>
@@ -13,8 +20,8 @@ export function BasicInfoForm({ formData, handleChange }) {
         <Input
           id="name"
           placeholder="Enter your name"
-          value={reduxData.name || ""}
-          onChange={(e) => handleChange("basicInfo", "name", e.target.value)}
+          value={basicInfo.name || ""}
+          onChange={(e) => handleChange("name", e.target.value)}
         />
       </div>
 
@@ -23,8 +30,8 @@ export function BasicInfoForm({ formData, handleChange }) {
         <Input
           id="email"
           placeholder="Enter your email"
-          value={reduxData.email || ""}
-          onChange={(e) => handleChange("basicInfo", "email", e.target.value)}
+          value={basicInfo.email || ""}
+          onChange={(e) => handleChange("email", e.target.value)}
         />
       </div>
 
@@ -33,8 +40,8 @@ export function BasicInfoForm({ formData, handleChange }) {
         <Input
           id="jobTitle"
           placeholder="Enter your job title"
-          value={reduxData.jobTitle || ""}
-          onChange={(e) => handleChange("basicInfo", "jobTitle", e.target.value)}
+          value={basicInfo.jobTitle || ""}
+          onChange={(e) => handleChange("jobTitle", e.target.value)}
         />
       </div>
 
@@ -43,8 +50,8 @@ export function BasicInfoForm({ formData, handleChange }) {
         <Input
           id="city"
           placeholder="Enter your city"
-          value={reduxData.city || ""}
-          onChange={(e) => handleChange("basicInfo", "city", e.target.value)}
+          value={basicInfo.city || ""}
+          onChange={(e) => handleChange("city", e.target.value)}
         />
       </div>
 
@@ -53,8 +60,8 @@ export function BasicInfoForm({ formData, handleChange }) {
         <Input
           id="phone"
           placeholder="Enter your phone number"
-          value={reduxData.phone || ""}
-          onChange={(e) => handleChange("basicInfo", "phone", e.target.value)}
+          value={basicInfo.phone || ""}
+          onChange={(e) => handleChange("phone", e.target.value)}
         />
       </div>
     </div>

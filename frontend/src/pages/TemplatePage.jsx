@@ -6,13 +6,17 @@ import CreativeTemplate from '@/Templates/CreativeTemplate';
 import ProfessionalTemplate from '@/Templates/ProfessionalTemplate';
 import DarkThemeTemplate from '@/Templates/DarkThemeTemplate';
 import TimelineTemplate from '@/Templates/TimelineTemplate';
+import { useParams } from 'react-router-dom';
 
-export default function TemplatePage({ templateName }) {
+export default function TemplatePage() {
   const formData = useSelector((state) => state.formData);
+  const templateName = useParams()
+  console.log(templateName.templateName);
+  
 
   // Choose the template based on the templateName
   let TemplateComponent;
-  switch (templateName) {
+  switch (templateName.templateName) {
     case 'minimalist':
       TemplateComponent = MinimalistTemplate;
       break;
