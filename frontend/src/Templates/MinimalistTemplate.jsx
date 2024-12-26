@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Typewriter } from 'react-simple-typewriter';
 
-export default function MinimalistTemplate() {
+export default function MinimalistTemplate({hideNavbar}) {
   const formData = useSelector((state) => state.formData);
   const selectedTheme = useSelector((state) => state.theme.selectedTheme);
   const theme = useSelector((state) => state.theme.themes[selectedTheme]);
@@ -11,7 +11,7 @@ export default function MinimalistTemplate() {
   return (
     <div className={`lg:flex-row ${theme.backgroundColor} min-h-screen`}>
       {/* Navigation */}
-      <header className={`w-full bg-gradient-to-r ${theme.primaryGradient} py-4 sticky top-0 z-10 shadow-md`}>
+    {  !hideNavbar && <header className={`w-full bg-gradient-to-r ${theme.primaryGradient} py-4 sticky top-0 z-10 shadow-md`}>
         <nav className="flex justify-center space-x-6">
           <Link to="#about" className="text-white font-semibold hover:underline">
             About
@@ -29,7 +29,7 @@ export default function MinimalistTemplate() {
             Education
           </Link>
         </nav>
-      </header>
+      </header>}
 
       <div className="p-6">
         <div className="flex flex-col md:flex-row items-center justify-between">
@@ -93,7 +93,7 @@ export default function MinimalistTemplate() {
                   <h3 className="text-lg font-bold text-gray-800">{project.name}</h3>
                   <p className="text-gray-600">{project.description}</p>
                   <a
-                    href={project.link}
+                    href={project.link ? project.link : project.homepage ? project.homepage : project.html_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`${theme.textColor} mt-2 inline-block`}

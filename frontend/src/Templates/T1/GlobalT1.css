@@ -31,6 +31,11 @@ body{
     color: var(--secondary);
 }
 
+#template2-preview {
+    padding: 20px;
+    box-sizing: border-box;
+} 
+  
 h1{
     font-size: 3rem;
 }

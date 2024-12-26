@@ -12,7 +12,7 @@ import Footer from './Footer/Footer';
 
 import '../GlobalT1.css'
 import '../T1.css'
-function Tempalte1(card) {
+function Tempalte1(card,{hideNavbar}) {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -29,17 +29,14 @@ function Tempalte1(card) {
   };
 
   return (
-      <div className={darkMode ? 'dark-mode' : 'light-mode'}>
-        <button className="mode-toggle" onClick={toggleDarkMode}>
-          <FontAwesomeIcon icon={darkMode ? faSun : faMoon} />
-        </button>
-        <Header />
+      <div className={darkMode ? 'dark-mode' : 'light-mode'} id='template2-preview'>
+        
+        {/* {!hideNavbar && <Header />} */}
         <Hero card={card} />
         <Skills />
         <Projects />
         <About />
-        {/* <Certifications /> */}
-        {/* <Contact /> */}
+      
         <Footer />
       </div>
   );

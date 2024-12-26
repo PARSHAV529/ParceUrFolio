@@ -8,6 +8,7 @@ import SelectTemplate from './pages/SelectTemplate';
 import PortfolioPreview from './pages/PortfolioPreview'; // Import PortfolioPreview page
 import TemplatePage from './pages/TemplatePage';
 import ThemeSelectionPage from './pages/ThemeSelectionPage';
+import Download from './pages/Download';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               <Route path="/select-template" element={<SelectTemplate />} />
               <Route path="/template/:templateName" element={<TemplatePage />} />
               <Route path="/themes" element={<ThemeSelectionPage />} />
+              <Route path="/download" element={<Download />} />
               {/* <Route path="/preview/:templateName" element={<PortfolioPreview />} /> */}
               {/* Add more routes for themes, download, etc. */}
             </Routes>

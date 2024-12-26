@@ -13,7 +13,7 @@ function About() {
       <h1 className={`text-center text-4xl font-bold py-12 px-10 ${theme.textColor}`}>
         {"< About />"}
       </h1>
-      <div className="flex flex-wrap justify-center items-center gap-5 px-5">
+      <div className="flex justify-center items-center gap-5 px-5">
         <Education theme={theme} />
         <Experience theme={theme} />
       </div>
