@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 const items = [
   {
     title: "Get Started",
-    url: "/",
+    url: "/GettingStarted",
     icon: UserCircle,
   },
   {
@@ -43,6 +43,11 @@ const items = [
     url: "/host",
     icon: Server,
   },
+  {
+    title: "Download Resume",
+    url: "/resume",
+    icon: Download,
+  },
 ];
 
 export function AppSidebar() {
@@ -56,50 +61,55 @@ export function AppSidebar() {
       setHideNavbar(true);
       setTimeout(resolve, 100); // Give some time for React to update the DOM
     });
-    const templateElement = document.getElementById('template-preview');
-  
+    const templateElement = document.getElementById("template-preview");
+
     if (!templateElement) {
-      console.error('Template element not found for PDF generation');
+      console.error("Template element not found for PDF generation");
       return;
     }
-  
+
     // Capture the element as a canvas
     const canvas = await html2canvas(templateElement, {
       scale: 2, // Improves rendering quality
       useCORS: true, // Allows external images
     });
-  
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'mm', 'a4');
+
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-  
+
     let heightLeft = imgHeight;
     let position = 0;
-  
+
     // Add the first page
-    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-  
+    pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+
     // Add additional pages if the content exceeds one page
     while (heightLeft > pageHeight) {
       position -= pageHeight;
       pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
       heightLeft -= pageHeight;
     }
-  
+
     // Save the PDF
-    pdf.save('template2-portfolio.pdf');
+    pdf.save('${selectedtemplate}-portfolio.pdf');
 
-    setHideNavbar(false)
-
+    setHideNavbar(false);
   };
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>ParceUrFolio</SidebarGroupLabel>
+          <Link
+            to="/"
+            className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+          >
+            <SidebarGroupLabel>ParceUrFolio</SidebarGroupLabel>
+          </Link>
+
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

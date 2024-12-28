@@ -3,10 +3,13 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Typewriter } from 'react-simple-typewriter';
 
-export default function MinimalistTemplate({hideNavbar}) {
-  const formData = useSelector((state) => state.formData);
-  const selectedTheme = useSelector((state) => state.theme.selectedTheme);
-  const theme = useSelector((state) => state.theme.themes[selectedTheme]);
+export default function MinimalistTemplate({hideNavbar,formData,the}) {
+  // const formData = useSelector((state) => state.formData);
+  // const selectedTheme = theme
+  // console.log(selectedTheme);
+  const selectedTheme=the.selectedTheme
+  
+  const theme = the.themes[selectedTheme]
 
   return (
     <div className={`lg:flex-row ${theme.backgroundColor} min-h-screen`}>

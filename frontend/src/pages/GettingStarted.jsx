@@ -123,7 +123,7 @@ navigate("/data-preview", { state: { reduxData } });
   ];
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-md shadow">
+    <div className="max-w-4xl mx-auto p-6 bg-blue-50 rounded-md  ">
       <h1 className="text-2xl font-bold mb-4">Getting Started</h1>
       <div className="mb-6">{TABS[activeTab].content}</div>
       <TabNavigation handlePrev={handlePrev} handleNext={handleNext} handleSubmit={handleSubmit} isTabValid={isTabValid} activeTab={activeTab} />

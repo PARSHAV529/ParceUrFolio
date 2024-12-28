@@ -50,50 +50,6 @@ export default function TemplatePage() {
   }
 
 
-  const generatePDF = async () => {
-    await new Promise((resolve) => {
-      setHideNavbar(true);
-      setTimeout(resolve, 100); // Give some time for React to update the DOM
-    });
-    const templateElement = document.getElementById('template-preview');
-  
-    if (!templateElement) {
-      console.error('Template element not found for PDF generation');
-      return;
-    }
-  
-    // Capture the element as a canvas
-    const canvas = await html2canvas(templateElement, {
-      scale: 2, // Improves rendering quality
-      useCORS: true, // Allows external images
-    });
-  
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-  
-    let heightLeft = imgHeight;
-    let position = 0;
-  
-    // Add the first page
-    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-  
-    // Add additional pages if the content exceeds one page
-    while (heightLeft > pageHeight) {
-      position -= pageHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-      heightLeft -= pageHeight;
-    }
-  
-    // Save the PDF
-    pdf.save('template2-portfolio.pdf');
-
-    setHideNavbar(false)
-
-  };
   
 
  
@@ -109,11 +65,11 @@ export default function TemplatePage() {
       </div>
      
     </div>
-     <div className="h-full flex justify-between items-center">
+     {/* <div className="h-full flex justify-between items-center">
      <button className="btn btn-primary" onClick={generatePDF}>
        Download as PDF
      </button>
-   </div>
+   </div> */}
    </>
 
   );

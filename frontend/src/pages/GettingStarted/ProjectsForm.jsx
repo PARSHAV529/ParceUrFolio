@@ -6,9 +6,12 @@ import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 export function ProjectsForm() {
   const dispatch = useDispatch();
+  const username = useSelector((state) => state.formData.basicInfo.githubUsername);
+
   const projects = useSelector((state) => state.formData.projects || []);
   const [manualProjects, setManualProjects] = useState(false);
   const [newProject, setNewProject] = useState({
@@ -17,7 +20,6 @@ export function ProjectsForm() {
     link: "",
   });
   const [editingIndex, setEditingIndex] = useState(null);
-  const [username, setusername] = useState('PARSHAV529');
 
   const handleAddOrEditProject = () => {
     if (newProject.name.trim() && newProject.description.trim()) {
@@ -32,59 +34,45 @@ export function ProjectsForm() {
       dispatch(setProjects(updatedProjects));
       setNewProject({ name: "", description: "", link: "" });
       setEditingIndex(null);
+      setManualProjects((prev) => !prev);
     } else {
       alert("Please fill out the project name and description.");
     }
   };
+  useEffect(()=>{
+    loadProjects();
+  },[projects])
+  
 
-    const [ user, setUser ] = useState({
-        name: 'Loading...'
-    })
+  const loadProjects = async () => {
+    if (!username) return;
 
-    useEffect(() => {
-        if(!username) return
+    try {
+      const response = await axios.get(`https://api.github.com/users/${username}/repos?per_page=100&type=all`);
 
-        loadUser()
-        loadProjects()
-    }, [])
+      // Extract only the required fields
+      const processedProjects = response.data.map((repo) => ({
+        name: repo.name,
+        description: repo.description || "No description available",
+        link: repo.homepage || repo.html_url,
+      }));
 
-    async function loadUser(){
-        try{
-            const response = await axios.get(`https://api.github.com/users/${username}`)
-
-            setUser(response.data)
-            console.log(response.data);
-            
-        } catch(err){
-            alert(`It was not possible to find user ${username}!`)
-        }
+      dispatch(setProjects(processedProjects));
+    } catch (err) {
+      alert("It was not possible to find projects!");
     }
-
-    async function loadProjects(){
-        try{
-            const response = await axios.get(`https://api.github.com/users/${username}/repos?per_page=100&type=all`)
-            
-            dispatch(setProjects(response.data));
-            console.log(response.data);
-        } catch(err){
-            alert('It was not possible to find projects!')
-        }
-    }
-
+  };
 
   const ImportProjectFromGithub = () => {
-
     if (username) {
-      console.log(username);
-      
-        loadUser()
-        loadProjects()
+      // loadProjects();
     } else {
-        alert('Please fill out the username field.')
+      alert("Please fill out the username field.");
     }
-  }
+  };
 
   const handleEdit = (index) => {
+    setManualProjects(true);
     setNewProject(projects[index]);
     setEditingIndex(index);
   };
@@ -95,64 +83,86 @@ export function ProjectsForm() {
   };
 
   return (
-    <div>
-      <h2 className="text-lg font-semibold mb-4">Projects</h2>
+    <div className="space-y-6 p-6 rounded-xl shadow-lg bg-white">
+      <motion.h2
+        className="text-lg font-semibold mb-4"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+      >
+        Projects
+      </motion.h2>
 
-      <div className="flex items-center space-x-2 gap-3">
-      <Switch
-                      checked={manualProjects}
-                      onCheckedChange={()=>setManualProjects((prev) => !prev)}
-                     
-                    />
-      <Label htmlFor="airplane-mode">{!manualProjects ? "Github":"Manual"}</Label>
-    </div>
-      <div>
+      {/* Switch for manual/GitHub projects */}
+      <motion.div
+        className="flex items-center space-x-2 gap-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
+      >
+        <Switch
+          checked={manualProjects}
+          onCheckedChange={() => setManualProjects((prev) => !prev)}
+        />
+        <Label htmlFor="airplane-mode">{!manualProjects ? "GitHub" : "Manual"}</Label>
+      </motion.div>
+
+      {/* Display the list of projects */}
+      <motion.div
+        className="mt-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         {projects.map((project, index) => (
-          <div key={index} className="mb-4 p-4 border rounded-lg">
+          <motion.div
+            key={index}
+            className="mb-4 p-4 border rounded-lg"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4 }}
+          >
             <div className="mb-2">
               <strong>{project.name}</strong>
             </div>
             <div className="mb-2">{project.description}</div>
-            {(project.link || project.html_url ) && (
+            {project.link && (
               <div className="mb-2">
                 <a
-                  href={manualProjects ? project.link : project.html_url}
+                  href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 underline"
                 >
-                  {manualProjects ? project.link : project.html_url}
+                  {project.link}
                 </a>
               </div>
             )}
-            {(project.homepage  ) && (
-              <div className="mb-2">
-                <a
-                  href={ project.homepage }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 underline"
-                >
-                  {  project.homepage}
-                </a>
-              </div>
-            )}
-            <div className="flex gap-2">
-              <Button variant="default" onClick={() => handleEdit(index)}>
-                Edit
-              </Button>
-              <Button variant="destructive" onClick={() => handleRemove(index)}>
-                Remove
-              </Button>
+            <div className="flex justify-start items-center space-x-5">
+              <motion.div whileHover={{ scale: 1.1 }}>
+                <Button variant="default" onClick={() => handleEdit(index)}>
+                  Edit
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.1 }}>
+                <Button variant="destructive" onClick={() => handleRemove(index)}>
+                  Remove
+                </Button>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
-      
+      </motion.div>
 
       {/* Form to add or edit a project */}
-      {manualProjects ? (
-        <div className="mb-4 mt-4">
+      {manualProjects && (
+        <motion.div
+          className="mb-4 mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+        >
           <Input
             type="text"
             value={newProject.name}
@@ -182,27 +192,19 @@ export function ProjectsForm() {
               setNewProject((prev) => ({ ...prev, link: e.target.value }))
             }
           />
-        </div>
-      ):(<div className="mt-4">
-        <Label htmlFor="username">Enter Github Username</Label>
-        <Input
-          id="username"
-          type="text"
-          value={username}
-          placeholder="Github Username"
-          onChange={(e) =>
-          {
-            setusername(e.target.value)
-            // console.log(e.target.value)
-          }
-            
-          }
-          className="mb-2"
-        />
-      </div>)}
-      <Button variant="default" onClick={manualProjects ? handleAddOrEditProject: ImportProjectFromGithub}>
-        {!manualProjects ? "Import Projects " : editingIndex !== null ? "Update Project" : "Add Project"}
-      </Button>
+        </motion.div>
+      )}
+
+      {manualProjects && (
+        <motion.div whileHover={{ scale: 1.1 }} className="w-12">
+          <Button
+            variant="default"
+            onClick={handleAddOrEditProject}
+          >
+            {editingIndex !== null ? "Update Project" : "Add Project"}
+          </Button>
+        </motion.div>
+      )}
     </div>
   );
 }
