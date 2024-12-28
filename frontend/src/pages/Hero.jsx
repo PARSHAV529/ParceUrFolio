@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setBasicInfo } from "@/redux/formDataSlice";
+import { setBasicInfo } from "@/Redux/formDataSlice";
 
 const Hero = () => {
   const [githubUsername, setGithubUsername] = useState("");
